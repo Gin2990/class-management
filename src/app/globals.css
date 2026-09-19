@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Custom styling for FullCalendar */
+.fc {
+  font-family: inherit;
+}
+
+.fc-theme-standard th {
+  border-color: #e2e8f0;
+  padding: 8px 4px;
+  background-color: #f8fafc;
+  font-weight: 600;
+  color: #475569;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.fc-theme-standard td {
+  border-color: #f1f5f9;
+}
+
+.fc-timegrid-slot {
+  height: 40px !important;
+}
+
+.fc-timegrid-slot-label {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.fc-event {
+  border-radius: 6px;
+  padding: 2px 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: none !important;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  cursor: pointer;
+}
+
+.fc-event:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.fc-col-header-cell.fc-day-today {
+  background-color: #ecfdf5 !important;
+  color: #059669 !important;
+}
+
+.fc-timegrid-col.fc-day-today {
+  background-color: #f0fdf4 !important;
+}
+
+.fc-button-primary {
+  background-color: #2563eb !important;
+  border-color: #2563eb !important;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  font-size: 0.875rem !important;
+  padding: 6px 14px !important;
+  text-transform: capitalize !important;
+}
+
+.fc-button-primary:hover {
+  background-color: #1d4ed8 !important;
+  border-color: #1d4ed8 !important;
+}
+
+.fc-button-active {
+  background-color: #1e40af !important;
+  border-color: #1e40af !important;
+}
+
+/* FullCalendar Event Resizer (Kéo dài ra / Thu gọn vào) */
+.fc-event-resizer {
+  cursor: ns-resize !important;
+}
+
+.fc-event-resizer-end {
+  height: 8px !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  background: rgba(255, 255, 255, 0.2);
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.fc-event-resizer-start {
+  height: 8px !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  background: rgba(255, 255, 255, 0.2);
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+

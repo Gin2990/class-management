@@ -1,0 +1,145 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Course {
+  id                  String       @id @default(cuid())
+  name                String
+  code                String?
+  description         String?
+  level               String       @default("GENERAL") // IELTS, B1, B2, C1, G6, GENERAL
+  classes             ClassGroup[]
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+}
+
+model Student {
+  id            String         @id @default(cuid())
+  name          String
+  email         String?
+  phone         String?
+  parentName    String?
+  parentEmail   String?
+  parentPhone   String?
+  status        String         @default("ACTIVE") // ACTIVE, PAUSED, COMPLETED
+  notes         String?
+  classMembers        ClassMember[]
+  enrollments         Enrollment[]
+  lessonRecords       LessonRecord[]
+  tuitionInstallments TuitionInstallment[]
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+}
+
+model ClassGroup {
+  id             String         @id @default(cuid())
+  name           String
+  courseId       String?
+  course         Course?        @relation(fields: [courseId], references: [id])
+  category       String         @default("TUTORING") // TUTORING, OFFICE, CLUB, OTHER
+  color          String         @default("#3b82f6") // Hex color for calendar
+  locationOrLink String?
+  status         String         @default("ACTIVE") // ACTIVE, PAUSED, FINISHED
+  members        ClassMember[]
+  schedules      Schedule[]
+  lessonRecords  LessonRecord[]
+  enrollments    Enrollment[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+model ClassMember {
+  id           String     @id @default(cuid())
+  classGroupId String
+  classGroup   ClassGroup @relation(fields: [classGroupId], references: [id], onDelete: Cascade)
+  studentId    String
+  student      Student    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now())
+
+  @@unique([classGroupId, studentId])
+}
+
+model Enrollment {
+  id              String      @id @default(cuid())
+  studentId       String
+  student         Student     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  classGroupId    String?
+  classGroup      ClassGroup? @relation(fields: [classGroupId], references: [id])
+  title           String      @default("Khóa học")
+  totalSessions   Float       @default(20)
+  pricePerSession Float       @default(250000)
+  totalAmount     Float       @default(5000000)
+  paidAmount      Float       @default(0)
+  paymentStatus   String      @default("UNPAID") // PAID, PARTIAL, UNPAID
+  startDate       DateTime    @default(now())
+  endDate         DateTime?
+  notes           String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model Schedule {
+  id            String         @id @default(cuid())
+  classGroupId  String
+  classGroup    ClassGroup     @relation(fields: [classGroupId], references: [id], onDelete: Cascade)
+  title         String
+  startTime     DateTime
+  endTime       DateTime
+  status        String         @default("SCHEDULED") // SCHEDULED, COMPLETED, CANCELLED, MAKEUP
+  googleEventId String?
+  notes         String?
+  lessonRecords LessonRecord[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model LessonRecord {
+  id               String      @id @default(cuid())
+  scheduleId       String?
+  schedule         Schedule?   @relation(fields: [scheduleId], references: [id], onDelete: SetNull)
+  classGroupId     String
+  classGroup       ClassGroup  @relation(fields: [classGroupId], references: [id], onDelete: Cascade)
+  studentId        String
+  student          Student     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  sessionNumber    Int         @default(1)
+  date             DateTime    @default(now())
+  attendance       String      @default("PRESENT") // PRESENT, ABSENT_EXCUSED, ABSENT_UNEXCUSED
+  topic            String?
+  skillsCovered    String?
+  teacherNotes     String?
+  homework         String?
+  performanceScore Float?
+  durationHours    Float?      @default(1.5)
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+}
+
+model TeacherProfile {
+  id              String   @id @default(cuid())
+  fullName        String   @default("Giáo viên")
+  email           String?
+  phone           String?
+  bankName        String   @default("MBBANK")
+  bankAccount     String   @default("0987654321")
+  bankAccountName String   @default("NGUYEN DINH LINH")
+  updatedAt       DateTime @updatedAt
+}
+
+model TuitionInstallment {
+  id        String   @id @default(cuid())
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  dueDate   DateTime
+  amount    Float
+  status    String   @default("PENDING") // PENDING, PAID, OVERDUE
+  note      String?
+  paidDate  DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
