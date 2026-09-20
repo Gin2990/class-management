@@ -113,7 +113,35 @@ export default function StudentDetailPage() {
       : 0;
 
   const currentClass = student.classMembers?.[0]?.classGroup;
-  const courseTitle = currentClass?.course?.title || currentClass?.name || 'Khóa học';
+
+  // Cú pháp tiêu đề chuẩn theo mẫu: [tên khóa học] COURSE FOR [tên học viên] ([tổng số giờ])
+  const getCourseDisplayName = () => {
+    // 1. Tách tiền tố trước dấu gạch ngang của tên lớp (ví dụ: "C1 - Sarah + Andy" -> "C1", "IELTS 6.5 - Yến Ngọc" -> "IELTS 6.5", "B1 - Linda" -> "B1")
+    if (currentClass?.name && /[-–—]/.test(currentClass.name)) {
+      const prefix = currentClass.name.split(/[-–—]/)[0].trim();
+      if (prefix) return prefix.replace(/course|khóa|lớp/gi, '').trim().toUpperCase();
+    }
+    // 2. Lấy cấp độ khóa học (B1, B2, C1, IELTS, G6...) nếu có
+    if (currentClass?.course?.level && currentClass.course.level !== 'GENERAL') {
+      return currentClass.course.level.toUpperCase();
+    }
+    // 3. Lấy tên lớp học hiện tại
+    if (currentClass?.name) {
+      return currentClass.name.replace(/course|khóa|lớp/gi, '').trim().toUpperCase();
+    }
+    // 4. Lấy tên từ bảng Course
+    if (currentClass?.course?.name) {
+      return currentClass.course.name.replace(/course|khóa|lớp/gi, '').trim().toUpperCase();
+    }
+    // 5. Lấy từ enrollment
+    if (student.enrollments?.[0]?.title) {
+      return student.enrollments[0].title.replace(/course|khóa|lớp/gi, '').trim().toUpperCase();
+    }
+    return 'ENGLISH';
+  };
+
+  const courseDisplayName = getCourseDisplayName();
+  const hoursUnit = tHours <= 1 ? 'hour' : 'hours';
 
   // Format date: e.g. "Thứ 5, 16/07/2026"
   const formatSessionDate = (d: string | Date | null | undefined) => {
@@ -221,9 +249,9 @@ export default function StudentDetailPage() {
   // Copy structured text report for Parents / Zalo
   const handleCopyTableReport = () => {
     let report = `=================================================\n`;
-    report += `NHẬT KÝ TIẾN ĐỘ HỌC TẬP - ${student.name.toUpperCase()}\n`;
-    report += `Khóa học: ${courseTitle} | Tổng gói: ${formatHours(tHours)} giờ\n`;
-    report += `Đã hoàn thành: ${formatHours(cHours)} giờ (${percent}%) | Còn lại: ${formatHours(rHours)} giờ\n`;
+    report += `${courseDisplayName} COURSE FOR ${student.name.toUpperCase()} (${formatHours(tHours)} ${hoursUnit.toUpperCase()})\n`;
+    report += `Lớp: ${currentClass?.name || 'Học 1-1'} | Đã hoàn thành: ${formatHours(cHours)}/${formatHours(tHours)} giờ (${percent}%)\n`;
+    report += `Còn lại: ${formatHours(rHours)} giờ\n`;
     report += `=================================================\n`;
     report += `Buổi | Ngày học | Khung giờ | Thời lượng | Bài học | Nhận xét\n`;
     report += `-------------------------------------------------\n`;
@@ -339,23 +367,28 @@ export default function StudentDetailPage() {
       {/* BẢNG ĐIỂM DANH & NHẬT KÝ KHÓA HỌC (THIẾT KẾ HIỆN ĐẠI, DỄ NHÌN) */}
       <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden space-y-0">
         {/* Header Thanh Tiêu Đề Bảng */}
-        <div className="p-5 border-b border-slate-200 bg-slate-50/70 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="p-5 border-b border-slate-200 bg-slate-50/70 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <BookOpen className="w-5 h-5 text-emerald-600" />
-              <h2 className="text-base sm:text-lg font-bold text-slate-900">
-                Nhật Ký Từng Buổi Học & Điểm Danh
+            <div className="flex items-center gap-2 flex-wrap">
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-black tracking-wide flex items-center gap-1.5 flex-wrap">
+                <span className="text-[#990000] uppercase">{courseDisplayName} COURSE FOR </span>
+                <span className="text-[#0000ff] uppercase">{student.name} </span>
+                <span className="text-slate-900 font-black">({formatHours(tHours)} {hoursUnit})</span>
               </h2>
-              <span className="px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 font-bold text-[11px]">
+              <span className="px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 font-bold text-[11px] shrink-0 ml-1">
                 {sortedRecords.length} buổi đã học
               </span>
             </div>
-            <p className="text-xs text-slate-500">
-              Khóa học: <strong className="text-slate-800">{courseTitle}</strong> • Học viên: <strong className="text-slate-800">{student.name}</strong> ({formatHours(tHours)} giờ)
+            <p className="text-xs text-slate-500 flex items-center gap-2 flex-wrap">
+              <span>Lớp: <strong className="text-slate-800">{currentClass?.name || 'Học 1-1'}</strong></span>
+              <span>•</span>
+              <span>Đã học: <strong className="text-emerald-700">{formatHours(cHours)} giờ</strong> ({percent}%)</span>
+              <span>•</span>
+              <span>Còn lại: <strong className="text-amber-700">{formatHours(rHours)} giờ</strong></span>
             </p>
           </div>
 
-          <div className="flex items-center gap-2 no-print">
+          <div className="flex items-center gap-2 no-print shrink-0">
             <button
               onClick={() => setSortAsc(!sortAsc)}
               className="px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold flex items-center gap-1.5 transition-all border border-slate-200 shadow-sm"

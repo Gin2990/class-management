@@ -160,6 +160,24 @@
 
 ---
 
+### 9. Tùy Biến Tiêu Đề Bảng Hồ Sơ Học Viên Theo Cú Pháp & Màu Sắc Chuẩn Form Mẫu
+* **Yêu cầu từ người dùng:** "thay đổi tiêu đề của từng học viên như hình mẫu, cú pháp sẽ là [tên khóa học] COURSE FOR [tên học viên] ([tổng số giờ])" (kèm 2 ảnh chụp mẫu so sánh).
+* **Đã thực hiện:**
+  - **Trang Chi Tiết Học Viên (`src/app/students/[id]/page.tsx`):**
+    - Thiết lập hàm nhận diện tên khóa học tự động và thông minh `getCourseDisplayName`:
+      - Tách tiền tố trước dấu gạch ngang từ tên lớp (VD: `C1 - Sarah + Andy` ➔ `C1`, `IELTS 6.5 - Yến Ngọc` ➔ `IELTS 6.5`, `B1 - Linda` ➔ `B1`).
+      - Nhận diện `level` chuẩn từ bảng Course (`B1`, `B2`, `C1`, `IELTS`, `G6`...).
+      - Tự động chuẩn hóa chữ in hoa (UPPERCASE).
+    - Cập nhật tiêu đề bảng theo đúng 100% cú pháp và màu sắc trong ảnh mẫu:
+      - `[tên khóa học] COURSE FOR `: In hoa, chữ đậm màu đỏ đậm (`#990000`).
+      - `[tên học viên]`: In hoa, chữ đậm màu xanh dương (`#0000ff`).
+      - `([tổng số giờ] hours)`: Chữ đậm màu đen chuẩn (`text-slate-900 font-black`).
+      - Ví dụ thực tế hiển thị: **`C1 COURSE FOR ANDY (20 hours)`**, **`B1 COURSE FOR LINDA (120 hours)`**.
+    - Dòng phụ bên dưới hiển thị ngắn gọn thông tin lớp và tiến độ: `Lớp: C1 - Sarah + Andy • Đã học: 1.5 giờ (8%) • Còn lại: 18.5 giờ`.
+    - Đồng bộ hóa định dạng này vào cả tính năng **"Copy Báo Cáo"** và **"Copy Tin Báo Cáo Phụ Huynh"** để khi gửi Zalo / SMS cho phụ huynh luôn đồng nhất phong cách.
+
+---
+
 ## 📂 BẢN ĐỒ CÁC FILE QUAN TRỌNG TRONG DỰ ÁN
 
 | Đường dẫn file | Nhiệm vụ chính |
