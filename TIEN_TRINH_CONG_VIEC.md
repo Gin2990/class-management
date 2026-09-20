@@ -213,9 +213,9 @@
   - **Tạo tệp SQL đồng bộ toàn diện (`prisma/supabase_migration.sql`):**
     - Chứa đầy đủ lệnh tạo 9 bảng, ràng buộc khóa ngoại và toàn bộ dữ liệu mẫu thực tế.
     - Giúp người dùng có thể nạp dữ liệu lên Supabase chỉ bằng 1 thao tác dán vào **SQL Editor** trên Supabase và bấm **Run**.
-  - **Biến môi trường sẵn sàng cho Vercel:**
-    - `DATABASE_URL`: `postgresql://postgres.cunbdjlksssyvgpuqehh:NhatMinh%401104@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres?pgbouncer=true`
-    - `DIRECT_URL`: `postgresql://postgres:NhatMinh%401104@db.cunbdjlksssyvgpuqehh.supabase.co:5432/postgres`
+  - **Biến môi trường chính xác 100% cho Vercel (Region ap-northeast-2 - Seoul / East Asia):**
+    - `DATABASE_URL`: `postgresql://postgres.cunbdjlksssyvgpuqehh:NhatMinh%401104@aws-0-ap-northeast-2.pooler.supabase.com:6543/postgres?pgbouncer=true`
+    - `DIRECT_URL`: `postgresql://postgres.cunbdjlksssyvgpuqehh:NhatMinh%401104@aws-0-ap-northeast-2.pooler.supabase.com:5432/postgres`
 
 ---
 
