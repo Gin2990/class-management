@@ -207,6 +207,18 @@
 
 ---
 
+### 11. Hoàn Thiện Bộ Chuyển Đổi Dữ Liệu Lên Supabase & Sẵn Sàng Deploy Vercel
+* **Kết quả thực hiện:**
+  - **Mã nguồn trên GitHub:** Đã đồng bộ 100% tại `https://github.com/Gin2990/class-management`.
+  - **Tạo tệp SQL đồng bộ toàn diện (`prisma/supabase_migration.sql`):**
+    - Chứa đầy đủ lệnh tạo 9 bảng, ràng buộc khóa ngoại và toàn bộ dữ liệu mẫu thực tế.
+    - Giúp người dùng có thể nạp dữ liệu lên Supabase chỉ bằng 1 thao tác dán vào **SQL Editor** trên Supabase và bấm **Run**.
+  - **Biến môi trường sẵn sàng cho Vercel:**
+    - `DATABASE_URL`: `postgresql://postgres.cunbdjlksssyvgpuqehh:NhatMinh%401104@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres?pgbouncer=true`
+    - `DIRECT_URL`: `postgresql://postgres:NhatMinh%401104@db.cunbdjlksssyvgpuqehh.supabase.co:5432/postgres`
+
+---
+
 ## 📂 BẢN ĐỒ CÁC FILE QUAN TRỌNG TRONG DỰ ÁN
 
 | Đường dẫn file | Nhiệm vụ chính |
