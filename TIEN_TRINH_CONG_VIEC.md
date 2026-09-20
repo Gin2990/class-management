@@ -200,7 +200,10 @@
     - Bổ sung lệnh `"postinstall": "prisma generate"` vào `package.json` để Vercel tự động build Prisma Client khi triển khai.
     - Cập nhật `.env.example` với hướng dẫn định dạng chuẩn của Supabase (`DATABASE_URL` và `DIRECT_URL`).
   - **Tài liệu hướng dẫn trực quan:**
-    - Tạo tệp `HUONG_DAN_DEPLOY_VERCEL_SUPABASE.md` hướng dẫn chi tiết từng bước cách lấy chuỗi kết nối Supabase, tạo Repo trên GitHub và liên kết deploy trên Vercel.
+  - **Đã Kết Nối & Đẩy Mã Nguồn Lên GitHub Thành Công:**
+    - Remote: `https://github.com/Gin2990/class-management.git`
+    - Nhánh chính: `main` (theo dõi `origin/main`)
+    - Đã push toàn bộ lịch sử commit, tài liệu hướng dẫn và mã nguồn lên GitHub.
 
 ---
 
