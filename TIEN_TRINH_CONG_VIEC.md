@@ -178,6 +178,32 @@
 
 ---
 
+### 10. Chuẩn Bị Đẩy Database Lên Supabase & Sẵn Sàng Deploy Vercel Qua GitHub
+* **Yêu cầu từ người dùng:** "OK, bây giờ đẩy toàn bộ database lên supabase, và commit cái này lên github để deploy qua vercel giúp mình"
+* **Đã thực hiện:**
+  - **Trích xuất toàn bộ dữ liệu SQLite hiện tại:**
+    - Tạo script tự động `scripts/dump-sqlite.ts` (lệnh `npm run db:dump`).
+    - Đã xuất thành công 100% dữ liệu ra `prisma/data_dump.json`:
+      - 1 TeacherProfile (Thông tin giáo viên)
+      - 5 Courses (Các khóa học C1, B1, B2, IELTS, G6)
+      - 20 Students (Đầy đủ hồ sơ học viên, số giờ gói, đơn giá, số giờ còn lại)
+      - 12 ClassGroups (Các lớp học kèm cấu hình màu và liên kết)
+      - 19 ClassMembers (Danh sách phân lớp của học viên)
+      - 9 Enrollments (Hợp đồng đăng ký khóa học)
+      - 42 Schedules (Các ca học trên thời khóa biểu)
+      - 67 LessonRecords (Nhật ký các buổi học kèm điểm danh, số giờ học thực tế, ghi chú giáo viên)
+      - 3 TuitionInstallments (Các đợt đóng học phí)
+  - **Xây dựng Script Nạp Dữ Liệu Tự Động Sang Supabase PostgreSQL:**
+    - Tạo script `scripts/restore-to-supabase.ts` (lệnh `npm run db:restore`).
+    - Tự động `upsert` toàn bộ 9 bảng theo đúng phân cấp khóa ngoại (foreign key hierarchy) và giữ nguyên toàn bộ ID gốc, đảm bảo không mất mát hay lệch bất kỳ dữ liệu nào.
+  - **Cấu hình môi trường Production cho Vercel:**
+    - Bổ sung lệnh `"postinstall": "prisma generate"` vào `package.json` để Vercel tự động build Prisma Client khi triển khai.
+    - Cập nhật `.env.example` với hướng dẫn định dạng chuẩn của Supabase (`DATABASE_URL` và `DIRECT_URL`).
+  - **Tài liệu hướng dẫn trực quan:**
+    - Tạo tệp `HUONG_DAN_DEPLOY_VERCEL_SUPABASE.md` hướng dẫn chi tiết từng bước cách lấy chuỗi kết nối Supabase, tạo Repo trên GitHub và liên kết deploy trên Vercel.
+
+---
+
 ## 📂 BẢN ĐỒ CÁC FILE QUAN TRỌNG TRONG DỰ ÁN
 
 | Đường dẫn file | Nhiệm vụ chính |
