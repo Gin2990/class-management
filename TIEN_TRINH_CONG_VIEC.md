@@ -133,31 +133,28 @@
 
 ---
 
-### 8. Bảng Điểm Danh & Nhật Ký Khóa Học Chuẩn Form Excel Trong Hồ Sơ Học Viên
-* **Yêu cầu từ người dùng:** "đây là 1 bảng điểm danh của 1 học viên, bạn có thể bổ sung phần này trong mục hồ sơ của từng học viên, như chỗ nhật ký từng buổi học ấy, thiết kế lại cho đẹp xem" (dựa theo ảnh mẫu bảng Excel: `Ses | Done | Date | Time | Hours | Lesson | Note` và khối tổng kết học phí bên dưới).
+### 8. Bảng Điểm Danh & Nhật Ký Khóa Học Tinh Gọn, Hiện Đại Trong Hồ Sơ Học Viên
+* **Yêu cầu từ người dùng:** "làm tương tự thôi, chứ k phải bắt chước hoàn toàn, như cái dấu tick đâu cần thiết, điểm danh bên thời khóa biểu là nó tự nhảy rồi, làm sao cho nó dễ nhìn lại"
 * **Đã thực hiện:**
   - **Trang Hồ Sơ Chi Tiết Học Viên (`src/app/students/[id]/page.tsx`):**
-    - Thiết kế lại toàn diện thành **Bảng Điểm Danh & Nhật Ký Khóa Học (Attendance & Lesson Sheet)** chuẩn như file Excel thực tế của giáo viên:
-      - **Banner tiêu đề:** Ví dụ `B1 COURSE FOR LINDA (120 HOURS)` nổi bật với phong cách màu đỏ thẫm/vàng kim sang trọng.
-      - **Cột Ses (Buổi):** Đánh số thứ tự từng buổi học (hỗ trợ sắp xếp Buổi 1 ➔ N hoặc Mới nhất trước).
-      - **Cột Done (Hoàn thành):** Biểu tượng ô tích `✓` đen/xanh ngọc khi đã học, hoặc hiển thị trạng thái phép/vắng.
-      - **Cột Date (Ngày):** Định dạng chuẩn `Thu, 16/7/26` gọn gàng.
-      - **Cột Time (Khung giờ):** Giờ học thực tế (VD: `18:00`).
-      - **Cột Hours (Số giờ):** Số giờ buổi học (VD: `1.5`, `1.0`).
-      - **Cột Lesson (Bài học):** Tên bài học / Topic của từng buổi.
-      - **Cột Note (Ghi chú):** Nhận xét, bài tập của giáo viên.
-      - **Các buổi học tương lai trên lịch:** Hiển thị với ô chưa tích `☐` kèm nút "Điểm danh nhanh".
-      - **Khối Tổng Kết Cuối Bảng:**
-        - `Total hours / Tổng số giờ học trực tiếp`: Số giờ màu đỏ đậm.
-        - `Completed hours / Số giờ đã học`: Số giờ màu xanh dương kèm % lộ trình.
-        - `Remaining hours / Số giờ còn lại`: Số giờ màu đen đậm.
-        - `Teaching rate / Học phí theo giờ`: Đơn giá VND / giờ.
-        - `Tuition fee / Học phí toàn khóa`: Tổng học phí VND / khóa.
-        - **Các dòng đợt đóng học phí:** Highlight màu vàng ấm (`#fef9c3`) chữ nghiêng kèm ngày đóng và trạng thái đã thanh toán.
-      - **Công cụ tương tác:**
-        - Nút **"🖨️ In Bảng Điểm Danh"**: Tự động ẩn sidebar và in ra trang tài liệu đẹp mắt.
-        - Nút **"📋 Copy Báo Cáo"**: Tự động chuyển bảng thành định dạng văn bản để gửi nhanh qua Zalo/Email cho phụ huynh.
-        - Nút **"Sửa / Xóa"** trên từng dòng buổi học để chỉnh sửa nhanh nội dung.
+    - Thiết kế lại với phong cách UI hiện đại, thanh thoát, thoáng đãng, dễ nhìn:
+      - **Bỏ hoàn toàn cột dấu tick `Done` không cần thiết:** Vì buổi học đã được điểm danh từ thời khóa biểu là tự động ghi nhận vào đây.
+      - **Các cột hiển thị rõ ràng, khoa học:**
+        1. **`Buổi`**: Huy hiệu số thứ tự buổi học (`#1, #2, #3...`), hỗ trợ nút đảo chiều thứ tự (`Buổi 1 ➔ N` hoặc `Mới nhất trước`).
+        2. **`Ngày Học`**: Định dạng ngày thứ tiếng Việt chuẩn (`Thứ Năm, 16/07/2026`).
+        3. **`Khung Giờ`**: Giờ học thực tế (`18:00 - 19:30`).
+        4. **`Thời Lượng`**: Huy hiệu màu xanh ngọc nổi bật (`1.5 giờ`, `1.0 giờ`).
+        5. **`Nội Dung Bài Học`**: Tên bài học / Topic rõ nét.
+        6. **`Ghi Chú / Nhận Xét`**: Nhận xét của giáo viên, bài tập về nhà.
+        7. **`Thao Tác`**: Nút sửa/xóa nhanh trên từng dòng khi rê chuột.
+      - **Khối Tổng Kết Khóa Học Dưới Bảng (Rất dễ nhìn, chia 3 cột gọn gàng):**
+        - **Cột 1 (Quỹ giờ học):** Tổng số giờ gói, Số giờ đã học kèm thanh tiến độ %, Số giờ còn lại kèm cảnh báo màu.
+        - **Cột 2 (Học phí khóa học):** Đơn giá / 1 giờ, Số giờ đăng ký, Tổng học phí dự kiến.
+        - **Cột 3 (Lịch đóng học phí):** Danh sách các đợt đóng với số tiền, hạn đóng và huy hiệu *Đã đóng / Chưa đóng*.
+      - **Công cụ tiện ích:**
+        - Nút **"🖨️ In Bảng"**: Hỗ trợ in trang sạch đẹp (ẩn thanh điều hướng).
+        - Nút **"📋 Copy Báo Cáo"**: Tự động chuyển toàn bộ bảng thành văn bản gửi nhanh qua Zalo/Email cho phụ huynh.
+        - Nút **"+ Ghi Nhận Buổi Học"**: Mở modal điểm danh buổi mới trực tiếp tại trang cá nhân.
   - **API Buổi Học (`src/app/api/lessons/route.ts`):**
     - Bổ sung `PATCH` và `DELETE` để chỉnh sửa hoặc xóa nhanh bản ghi buổi học trực tiếp từ bảng điểm danh.
 
