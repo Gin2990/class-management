@@ -111,3 +111,20 @@ body {
   border-top-right-radius: 6px;
 }
 
+/* Tối ưu hóa khi in bảng điểm danh (Print Mode) */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  aside, .no-print {
+    display: none !important;
+  }
+  main {
+    margin-left: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+}
+
+

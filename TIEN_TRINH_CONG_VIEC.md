@@ -133,6 +133,36 @@
 
 ---
 
+### 8. Bảng Điểm Danh & Nhật Ký Khóa Học Chuẩn Form Excel Trong Hồ Sơ Học Viên
+* **Yêu cầu từ người dùng:** "đây là 1 bảng điểm danh của 1 học viên, bạn có thể bổ sung phần này trong mục hồ sơ của từng học viên, như chỗ nhật ký từng buổi học ấy, thiết kế lại cho đẹp xem" (dựa theo ảnh mẫu bảng Excel: `Ses | Done | Date | Time | Hours | Lesson | Note` và khối tổng kết học phí bên dưới).
+* **Đã thực hiện:**
+  - **Trang Hồ Sơ Chi Tiết Học Viên (`src/app/students/[id]/page.tsx`):**
+    - Thiết kế lại toàn diện thành **Bảng Điểm Danh & Nhật Ký Khóa Học (Attendance & Lesson Sheet)** chuẩn như file Excel thực tế của giáo viên:
+      - **Banner tiêu đề:** Ví dụ `B1 COURSE FOR LINDA (120 HOURS)` nổi bật với phong cách màu đỏ thẫm/vàng kim sang trọng.
+      - **Cột Ses (Buổi):** Đánh số thứ tự từng buổi học (hỗ trợ sắp xếp Buổi 1 ➔ N hoặc Mới nhất trước).
+      - **Cột Done (Hoàn thành):** Biểu tượng ô tích `✓` đen/xanh ngọc khi đã học, hoặc hiển thị trạng thái phép/vắng.
+      - **Cột Date (Ngày):** Định dạng chuẩn `Thu, 16/7/26` gọn gàng.
+      - **Cột Time (Khung giờ):** Giờ học thực tế (VD: `18:00`).
+      - **Cột Hours (Số giờ):** Số giờ buổi học (VD: `1.5`, `1.0`).
+      - **Cột Lesson (Bài học):** Tên bài học / Topic của từng buổi.
+      - **Cột Note (Ghi chú):** Nhận xét, bài tập của giáo viên.
+      - **Các buổi học tương lai trên lịch:** Hiển thị với ô chưa tích `☐` kèm nút "Điểm danh nhanh".
+      - **Khối Tổng Kết Cuối Bảng:**
+        - `Total hours / Tổng số giờ học trực tiếp`: Số giờ màu đỏ đậm.
+        - `Completed hours / Số giờ đã học`: Số giờ màu xanh dương kèm % lộ trình.
+        - `Remaining hours / Số giờ còn lại`: Số giờ màu đen đậm.
+        - `Teaching rate / Học phí theo giờ`: Đơn giá VND / giờ.
+        - `Tuition fee / Học phí toàn khóa`: Tổng học phí VND / khóa.
+        - **Các dòng đợt đóng học phí:** Highlight màu vàng ấm (`#fef9c3`) chữ nghiêng kèm ngày đóng và trạng thái đã thanh toán.
+      - **Công cụ tương tác:**
+        - Nút **"🖨️ In Bảng Điểm Danh"**: Tự động ẩn sidebar và in ra trang tài liệu đẹp mắt.
+        - Nút **"📋 Copy Báo Cáo"**: Tự động chuyển bảng thành định dạng văn bản để gửi nhanh qua Zalo/Email cho phụ huynh.
+        - Nút **"Sửa / Xóa"** trên từng dòng buổi học để chỉnh sửa nhanh nội dung.
+  - **API Buổi Học (`src/app/api/lessons/route.ts`):**
+    - Bổ sung `PATCH` và `DELETE` để chỉnh sửa hoặc xóa nhanh bản ghi buổi học trực tiếp từ bảng điểm danh.
+
+---
+
 ## 📂 BẢN ĐỒ CÁC FILE QUAN TRỌNG TRONG DỰ ÁN
 
 | Đường dẫn file | Nhiệm vụ chính |

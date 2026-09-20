@@ -138,3 +138,53 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
+
+export async function PATCH(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { id, topic, teacherNotes, homework, durationHours, attendance, date } = body;
+    if (!id) {
+      return NextResponse.json({ success: false, error: 'Thiếu ID buổi học!' }, { status: 400 });
+    }
+
+    const dataToUpdate: any = {};
+    if (topic !== undefined) dataToUpdate.topic = topic.trim();
+    if (teacherNotes !== undefined) dataToUpdate.teacherNotes = teacherNotes ? teacherNotes.trim() : null;
+    if (homework !== undefined) dataToUpdate.homework = homework ? homework.trim() : null;
+    if (durationHours !== undefined) dataToUpdate.durationHours = parseFloat(durationHours) || 0;
+    if (attendance !== undefined) dataToUpdate.attendance = attendance;
+    if (date !== undefined) dataToUpdate.date = new Date(date);
+
+    const updated = await prisma.lessonRecord.update({
+      where: { id },
+      data: dataToUpdate,
+      include: {
+        schedule: true,
+      },
+    });
+
+    return NextResponse.json({ success: true, data: updated, message: 'Đã cập nhật buổi học thành công!' });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ success: false, error: 'Thiếu ID buổi học cần xóa!' }, { status: 400 });
+    }
+
+    await prisma.lessonRecord.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ success: true, message: 'Đã xóa bản ghi buổi học thành công!' });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
+}
+

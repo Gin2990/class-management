@@ -15,6 +15,14 @@ export async function GET(
             classGroup: {
               include: {
                 course: true,
+                schedules: {
+                  where: {
+                    status: 'SCHEDULED',
+                  },
+                  orderBy: {
+                    startTime: 'asc',
+                  },
+                },
               },
             },
           },
