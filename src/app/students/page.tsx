@@ -51,7 +51,6 @@ export default function StudentsPage() {
   const [newPhone, setNewPhone] = useState<string>('');
   const [newParentName, setNewParentName] = useState<string>('');
   const [newParentEmail, setNewParentEmail] = useState<string>('');
-  const [newClassId, setNewClassId] = useState<string>('');
   const [newTotalSessions, setNewTotalSessions] = useState<string>('20');
   const [newPricePerSession, setNewPricePerSession] = useState<string>('300000');
   const [newInstallments, setNewInstallments] = useState<InstallmentItem[]>([]);
@@ -65,7 +64,6 @@ export default function StudentsPage() {
   const [editPhone, setEditPhone] = useState<string>('');
   const [editParentName, setEditParentName] = useState<string>('');
   const [editParentEmail, setEditParentEmail] = useState<string>('');
-  const [editClassId, setEditClassId] = useState<string>('');
   const [editTotalSessions, setEditTotalSessions] = useState<string>('20');
   const [editPricePerSession, setEditPricePerSession] = useState<string>('300000');
   const [editInstallments, setEditInstallments] = useState<InstallmentItem[]>([]);
@@ -158,7 +156,6 @@ export default function StudentsPage() {
     setEditPhone(st.phone || '');
     setEditParentName(st.parentName || '');
     setEditParentEmail(st.parentEmail || '');
-    setEditClassId(st.classMembers?.[0]?.classGroupId || '');
     setEditTotalSessions(
       st.activeEnrollment?.totalSessions?.toString() || st.totalSessions?.toString() || '20'
     );
@@ -201,7 +198,6 @@ export default function StudentsPage() {
           phone: newPhone,
           parentName: newParentName,
           parentEmail: newParentEmail,
-          classGroupId: newClassId || null,
           totalSessions: newTotalSessions,
           pricePerSession: newPricePerSession,
           installments: newInstallments,
@@ -218,7 +214,6 @@ export default function StudentsPage() {
         setNewPhone('');
         setNewParentName('');
         setNewParentEmail('');
-        setNewClassId('');
         setNewInstallments([]);
         fetchData();
       } else {
@@ -249,7 +244,6 @@ export default function StudentsPage() {
           phone: editPhone,
           parentName: editParentName,
           parentEmail: editParentEmail,
-          classGroupId: editClassId || null,
           totalSessions: editTotalSessions,
           pricePerSession: editPricePerSession,
           installments: editInstallments,
@@ -412,17 +406,19 @@ export default function StudentsPage() {
 
                       {/* Lớp đang học */}
                       <td className="py-3 px-3 align-middle">
-                        {st.classMembers && st.classMembers.length > 0 ? (
+                        {st.classMembers && st.classMembers.filter((cm: any) => cm.classGroup).length > 0 ? (
                           <div className="flex flex-wrap gap-1">
-                            {st.classMembers.map((cm: any) => (
-                              <span
-                                key={cm.id}
-                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 font-semibold text-xs border border-emerald-200/80 whitespace-nowrap"
-                              >
-                                <GraduationCap className="w-3 h-3 text-emerald-600 shrink-0" />
-                                <span>{cm.classGroup?.name}</span>
-                              </span>
-                            ))}
+                            {st.classMembers
+                              .filter((cm: any) => cm.classGroup)
+                              .map((cm: any) => (
+                                <span
+                                  key={cm.id}
+                                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 font-semibold text-xs border border-emerald-200/80 whitespace-nowrap"
+                                >
+                                  <GraduationCap className="w-3 h-3 text-emerald-600 shrink-0" />
+                                  <span>{cm.classGroup.name}</span>
+                                </span>
+                              ))}
                           </div>
                         ) : (
                           <span className="inline-block px-2.5 py-1 rounded-lg bg-slate-100 text-slate-500 font-medium text-xs whitespace-nowrap">
@@ -615,35 +611,11 @@ export default function StudentsPage() {
                 </div>
               </div>
 
-              {/* Lớp học */}
-              <div className="space-y-2 pt-2 border-t border-slate-100">
-                <p className="text-xs font-bold text-slate-800 uppercase tracking-wider">
-                  2. Xếp lớp học
-                </p>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Lớp Đang Học (Tùy chọn)
-                  </label>
-                  <select
-                    value={newClassId}
-                    onChange={(e) => setNewClassId(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none text-xs bg-white"
-                  >
-                    <option value="">-- Chưa xếp lớp (xếp sau) --</option>
-                    {classes.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
               {/* Gói giờ học */}
               <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-2">
                 <div className="flex items-center justify-between">
                   <p className="text-xs font-bold text-slate-800 uppercase tracking-wider">
-                    3. Gói giờ học & Đơn giá
+                    2. Gói giờ học & Đơn giá
                   </p>
                   <span className="text-[11px] font-semibold text-emerald-700">
                     Dự kiến: {(Number(newTotalSessions || 0) * Number(newPricePerSession || 0)).toLocaleString('vi-VN')} đ
@@ -892,35 +864,11 @@ export default function StudentsPage() {
                 </div>
               </div>
 
-              {/* Lớp học */}
-              <div className="space-y-2 pt-2 border-t border-slate-100">
-                <p className="text-xs font-bold text-slate-800 uppercase tracking-wider">
-                  2. Xếp lớp học
-                </p>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Lớp Đang Học
-                  </label>
-                  <select
-                    value={editClassId}
-                    onChange={(e) => setEditClassId(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none text-xs bg-white"
-                  >
-                    <option value="">-- Chưa xếp lớp (hoặc bỏ lớp) --</option>
-                    {classes.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
               {/* Gói giờ học */}
               <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-2">
                 <div className="flex items-center justify-between">
                   <p className="text-xs font-bold text-slate-800 uppercase tracking-wider">
-                    3. Gói giờ học & Đơn giá
+                    2. Gói giờ học & Đơn giá
                   </p>
                   <span className="text-[11px] font-semibold text-emerald-700">
                     Dự kiến: {(Number(editTotalSessions || 0) * Number(editPricePerSession || 0)).toLocaleString('vi-VN')} đ

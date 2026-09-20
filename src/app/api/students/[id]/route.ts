@@ -128,21 +128,8 @@ export async function PATCH(
       data: dataToUpdate,
     });
 
-    // 2. Cập nhật lớp học (classMember)
-    if (classGroupId !== undefined) {
-      await prisma.classMember.deleteMany({
-        where: { studentId: id },
-      });
-
-      if (classGroupId) {
-        await prisma.classMember.create({
-          data: {
-            studentId: id,
-            classGroupId,
-          },
-        });
-      }
-    }
+    // Lưu ý: Việc xếp lớp (classMember) được quản lý tập trung tại Quản Lý Lớp Học (/classes).
+    // Không ghi đè hoặc xóa classMember khi cập nhật thông tin học viên.
 
     // 3. Cập nhật gói giờ học (enrollment)
     const rawHours = totalHours !== undefined ? totalHours : totalSessions;

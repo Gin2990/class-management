@@ -118,6 +118,21 @@
 
 ---
 
+### 7. Tách Biệt Việc Xếp Lớp Sang Quản Lý Lớp Học & Bảo Toàn Cột "Lớp Đang Học"
+* **Yêu cầu từ người dùng:** "cái phần chỉnh sửa học viên bỏ phần xếp lớp học này đi, phần xếp lớp đã đưa vào phần quản lý lớp học rồi, tuy nhiên trong phần tổng quan học viên thì vẫn có cột lớp đang học, dữ liệu thì lấy từ bên quản lý lớp học đưa về"
+* **Đã thực hiện:**
+  - **Form Thêm / Sửa Học Viên (`src/app/students/page.tsx`):**
+    - Bỏ hoàn toàn phần chọn lớp `2. XẾP LỚP HỌC` (dropdown chọn lớp) khỏi cả 2 modal: Thêm mới và Chỉnh sửa học viên.
+    - Đánh số thứ tự lại các mục: `1. Thông tin cá nhân`, `2. Gói giờ học & Đơn giá`, `Các Đợt Đóng Học Phí`.
+    - `handleUpdateStudent` không gửi trường `classGroupId` để tránh xóa đè các lớp học của học viên.
+  - **API Cập Nhật Học Viên (`src/app/api/students/[id]/route.ts`):**
+    - Gỡ bỏ logic tự động xóa/ghi đè `classMember` khi cập nhật học viên. Toàn bộ quan hệ thành viên lớp (`classMember`) được bảo toàn 100% và quản lý tập trung ở `/classes`.
+  - **Bảng Tổng Quan Học Viên (`src/app/students/page.tsx`):**
+    - Cột **"LỚP ĐANG HỌC"** vẫn được duy trì nguyên vẹn ở vị trí thứ 2.
+    - Dữ liệu được nạp trực tiếp từ quan hệ `ClassMember -> ClassGroup` của mô-đun Quản lý lớp học, hiển thị badge tên lớp kèm icon `GraduationCap` đẹp mắt. Nếu chưa xếp lớp sẽ hiển thị `Chưa xếp lớp`.
+
+---
+
 ## 📂 BẢN ĐỒ CÁC FILE QUAN TRỌNG TRONG DỰ ÁN
 
 | Đường dẫn file | Nhiệm vụ chính |
